@@ -1,0 +1,89 @@
+body {
+  text-align: center;
+  background-image: url('../img/nyc.jpg');
+	background-position: 50% 0%;
+	background-attachment: fixed;
+	background-size: cover;
+}
+
+h1 {
+  font-family: "Times New Roman", serif;
+  font-weight: 900;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+hr {
+  width: 25%;
+	border-top: 3px double #8c8b8b;
+}
+
+p, a, span, li {
+  font-family: "Georgia", serif;
+}
+
+a {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+span.line {
+  font-size: 1.1em;
+}
+
+span.text, span.form {
+  font-size: 0.8em;
+}
+
+ul {
+  list-style-type: none;
+  width: 25%;
+  padding-left: 37%;
+}
+
+/* assigns colors to different lines */
+.lineA, .lineC, .lineE {
+  color: #3385ff;
+}
+
+.lineF, .lineM, .lineB, .lineD {
+  color: #FF6319;
+}
+
+.lineG {
+  color: #6CBE45;
+}
+
+.lineJ, .lineZ {
+  color: #996633;
+}
+
+.lineL {
+  color: #A7A9AC;
+}
+
+.lineN, .lineQ, .lineR {
+  color: #FCCC0A;
+}
+
+.lineS {
+  color: #808183;
+}
+
+.line1, .line2, .line3 {
+  color: #EE352E;
+}
+
+.line4, .line5, .line6 {
+  color: #00933C;
+}
+
+.line7 {
+  color: #B933AD;
+}

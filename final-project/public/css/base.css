@@ -1,0 +1,104 @@
+@font-face {
+  font-family: 'blackout';
+  src:
+    url('fonts/blackout_midnight-webfont.svg'),
+    url('fonts/blackout_midnight-webfont.ttf'),
+    url('fonts/blackout_midnight-webfont.woff'),
+    url('fonts/blackout_midnight-webfont.eot');
+}
+@font-face {
+  font-family: 'ostrich';
+  src:
+    url('fonts/ostrich-sans-regular.svg'),
+    url('fonts/ostrich-sans-regular.ttf'),
+    url('fonts/ostrich-sans-regular.woff'),
+    url('fonts/ostrich-sans-regular.eot');
+}
+@font-face {
+  font-family: 'southpaw';
+  src:
+    url('fonts/southpaw-webfont.svg'),
+    url('fonts/southpaw-webfont.ttf'),
+    url('fonts/southpaw-webfont.woff'),
+    url('fonts/southpaw-webfont.eot');
+}
+@font-face {
+   font-family: "iconvault";
+   src: url("iconvault_forecastfont.eot");
+   src: url("iconvault_forecastfont.eot?#iefix") format("embedded-opentype"),
+        url("iconvault_forecastfont.woff") format("woff"),
+        url("iconvault_forecastfont.ttf") format("truetype"),
+        url("iconvault_forecastfont.svg#iconvault") format("svg");
+   font-weight: normal;
+   font-style: normal;
+ }
+
+body {
+  background: url(https://media.giphy.com/media/lyVNcb1n5Ob0Q/giphy.gif);
+  background-position: 50% 40%;
+	background-attachment: fixed;
+	background-size: cover;
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-family: Georgia, serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 8em;
+  color: black;
+  font-family: 'blackout', sans-serif;
+}
+
+h4 {
+  text-align: center;
+  font-size: 3em;
+  color: black;
+  font-family: 'blackout', sans-serif;
+}
+
+.weather {
+  font-family: 'Georgia', serif;
+  font-size: 2em;
+  text-align: center;
+}
+
+p {
+  font-family: 'Georgia', serif;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+/*.clothing {
+  font-family: 'southpaw', sans-serif;
+}*/
+
+.temp {
+  font-size: 5em;
+  font-family: 'ostrich', sans-serif;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+}
+
+.savedLocationFormDiv, .locationFormDiv {
+  text-align: center;
+}
+
+/*styling for map*/
+html, body {
+  height: 80%;
+}
+#map {
+  height: 100%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}

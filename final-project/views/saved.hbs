@@ -1,0 +1,58 @@
+<h1>Saved Locations</h1>
+
+<table>
+  <tr>
+    <td>City Name</td>
+    <td>Latitude</td>
+    <td>Longitude</td>
+  </tr>
+{{#each obj}}
+  <tr>
+    <td>{{name}}</td>
+    <td>{{lat}}</td>
+    <td>{{long}}</td>
+  </tr>
+{{/each}}
+</table>
+
+<br><br>
+
+<h4>Want to add another?</h4>
+<div id="map"></div>
+<br><br>
+<div class='savedLocationFormDiv'>
+  <p>Or input a location below:</p>
+  <form method="POST" action="/saved">
+    City Name: <input type="text" name="name" value="">
+    <br><br>
+    Latitude: <input type="text" name="lat" value="">
+    <br><br>
+    Longitude: <input type="text" name="lng" value="">
+    <br><br>
+    <input type="submit" name="" value="Go!">
+  </form>
+</div>
+
+<script>
+  var map;
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      center: {lat: 38.631912, lng: -98.157859 }
+    });
+
+    map.addListener('click', function(e) {
+      placeMarkerAndPanTo(e.latLng, map);
+    });
+  }
+
+  function placeMarkerAndPanTo(latLng, map) {
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map
+    });
+    map.panTo(latLng);
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhhbCHpCoYv2ekugMAzqjvmK9975-VVSs&callback=initMap"
+async defer></script>

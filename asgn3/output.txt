@@ -1,0 +1,41 @@
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/
+HTTP/1.1 200 OK
+Content-Type: text/html
+Date: Thu, 25 Feb 2016 22:17:02 GMT
+Connection: keep-alive
+
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/about
+HTTP/1.1 200 OK
+Content-Type: text/html
+Date: Thu, 25 Feb 2016 22:17:08 GMT
+Connection: keep-alive
+
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/ABOUT
+HTTP/1.1 200 OK
+Content-Type: text/html
+Date: Thu, 25 Feb 2016 22:17:13 GMT
+Connection: keep-alive
+
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/about/
+HTTP/1.1 200 OK
+Content-Type: text/html
+Date: Thu, 25 Feb 2016 22:17:20 GMT
+Connection: keep-alive
+
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/me
+HTTP/1.1 301 Moved Permanently
+Location: /about
+Date: Thu, 25 Feb 2016 22:17:23 GMT
+Connection: keep-alive
+
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/css/base.css
+HTTP/1.1 200 OK
+Content-Type: text/css
+Date: Thu, 25 Feb 2016 22:17:31 GMT
+Connection: keep-alive
+
+172-17-29-119:jmw633-homework03 jessicawang$ curl -I http://localhost:3000/img/dougie.png
+HTTP/1.1 200 OK
+Content-Type: image/png
+Date: Thu, 25 Feb 2016 22:17:46 GMT
+Connection: keep-alive

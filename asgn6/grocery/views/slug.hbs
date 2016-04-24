@@ -1,0 +1,23 @@
+{{#each obj}}
+  <h1>Modify... {{title}}</h1>
+  <!-- picture form -->
+  <form method="POST" action="/image-posts/{{title}}">
+  <p style="color:red;">{{error}}</p>
+    {{#each images}}
+      <input type="checkbox" name="imageBox" value="{{_id}}"><span>{{caption}}</span>
+      <br><br>
+      <img src="{{url}}">
+      <br><br><br>
+    {{/each}}
+    <input type="submit" name="" value="Submit">
+  </form>
+
+<br><br>
+<!-- add additional image form -->
+<form method="POST" action="/image-posts/{{title}}">
+    Image URL: <input type="text" name="addURL" value="">, Caption: <input type="text" name="addCaption" value="">
+    <br><br>
+    <input type="submit" name="" value="Add Another">
+</form>
+
+{{/each}}

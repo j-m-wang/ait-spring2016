@@ -1,0 +1,15 @@
+<p>Showing only movies directed by: <span class="highlight">{{obj.0.director}}</span></p>
+<table>
+  <tr>
+    <td class="header">Title</td>
+    <td class="header">Year</td>
+    <td class="header">Director</td>
+  </tr>
+  {{#each obj}}
+  <tr>
+      <td>{{title}}</td>
+      <td>{{year}}</td>
+      <td>{{director}}</td>
+  </tr>
+  {{/each}}
+</table>

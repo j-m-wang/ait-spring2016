@@ -1,0 +1,23 @@
+<p style="color:red;">{{error}}</p>
+<form method="POST" action="">
+    Image Post Title: <input type="text" name="title" value="">
+    <br><br>
+    Image 1 URL: <input type="text" name="url1" value="">, Caption: <input type="text" name="caption1" value="">
+    <br><br>
+    Image 2 URL: <input type="text" name="url2" value="">, Caption: <input type="text" name="caption2" value="">
+    <br><br>
+    Image 3 URL: <input type="text" name="url3" value="">, Caption: <input type="text" name="caption3" value="">
+    <br><br>
+    <input type="submit" name="" value="Add New Image Post">
+</form>
+
+<br><br>
+
+{{#each obj}}
+  <a href="/image-posts/{{slug}}"><h1>{{title}}</h1></a>
+  {{#each images}}
+    <p>{{caption}}</p>
+    <img src="{{url}}">
+  {{/each}}
+<br>
+{{/each}}

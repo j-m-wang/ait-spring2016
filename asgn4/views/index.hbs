@@ -1,0 +1,13 @@
+<form method="GET" action="/">
+  <span class="form">Only show me complaints on the </span><input type="text" name="filter" value=""><span class="form"> line</span>
+  <input type="submit" name="" value="Go!">
+</form>
+<ul>
+  {{#each obj}}
+    <div class="line{{this.line}}">
+      <li><span class="line">{{this.line}}</span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="text">{{this.complaint}}</span></li>
+    </div>
+  {{/each}}
+</ul>

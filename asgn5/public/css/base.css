@@ -1,0 +1,33 @@
+h1, p, a, h3 {
+  text-align: center;
+  display: block;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.header {
+  font-weight: bold;
+  background-color: LightGrey;
+}
+
+.highlight {
+  background-color: yellow;
+}
+
+form {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  text-align: center;
+}
+
+table {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: 0.9em;
+  border-collapse: collapse;
+  width: 40%;
+  margin: 0px auto;
+  border: 1px solid black;
+}
+
+th, td {
+  padding-left: 2;
+  border: 1px solid black;
+}
