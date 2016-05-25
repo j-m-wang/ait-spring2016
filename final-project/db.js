@@ -1,17 +1,13 @@
 //db.js
 var mongoose = require('mongoose');
 
-// users
-// users can have several saved locations associated with their account
-var User = new mongoose.Schema({
-  locations:  [{type: mongoose.Schema.Types.ObjectId, ref: 'SavedLocation' }]
-});
-
 // users saved locations
 var SavedLocation = new mongoose.Schema({
   name: String,
   lat: Number,
-  long: Number
+  long: Number,
+  forecast: String,
+  temp: Number
 });
 mongoose.model('SavedLocation', SavedLocation);
 
@@ -21,21 +17,12 @@ var Background = new mongoose.Schema({
   timeOfDay: {type:String, enum:['morning', 'night']},
   url: {type: String, required: true}
 });
+mongoose.model('Background', Background);
 
-// clothing icons
-var ClothingIcons = new mongoose.Schema({
-  name: String,
-  url: {type: String, required: true}
+//past viewed locations
+var PastViewed = new mongoose.Schema({
+  name: String
 });
-
-// weather info
-var Weather = new mongoose.Schema({
-  forecast: {type:String, enum:['sunny', 'cloudy', 'rainy', 'snowy', 'thunder']},
-  high: Number,
-  low: Number,
-  sunrise: Number,
-  sunset: Number,
-  current: Number
-});
+mongoose.model('PastViewed', PastViewed);
 
 mongoose.connect('mongodb://localhost/finalProject');

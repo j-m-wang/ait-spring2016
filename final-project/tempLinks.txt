@@ -1,0 +1,43 @@
+sunny:
+https://media.giphy.com/media/lyVNcb1n5Ob0Q/giphy.gif
+https://media.giphy.com/media/l4hLSoxh3bZOvrn0c/giphy.gif
+https://media.giphy.com/media/xTiQyBRkkKfHGiA93y/giphy.gif
+https://media.giphy.com/media/l4hLB7O7ot889liX6/giphy.gif
+https://media.giphy.com/media/l4hLy4cbsLPAzhhT2/giphy.gif
+https://media.giphy.com/media/3oGRFx7dy5pEywA9Ec/giphy.gif
+https://66.media.tumblr.com/6cb36e74cf8bcae6eeebe2bfc53db26f/tumblr_o2p6m6f6bn1upvbufo1_540.gif
+
+cloudy: https://media.giphy.com/media/8h7nBg0MOej4c/giphy.gif
+https://media.giphy.com/media/HoUgegTjteXCw/giphy.gif
+https://media.giphy.com/media/NUDfulESy6gJG/giphy.gif
+https://media.giphy.com/media/l4hLWgcHuPVv8dCCY/giphy.gif
+https://media.giphy.com/media/l4hLJP5HBC49JSVBC/giphy.gif
+
+rainy: https://media.giphy.com/media/120VGDQhsbiHa8/giphy.gif
+https://media.giphy.com/media/l4hLRAwCyCjXiPbos/giphy.gif
+https://66.media.tumblr.com/a2996479d008dcd9ccea152fd78d6c3a/tumblr_nzq7p7pQmm1upvbufo1_r1_540.gif
+
+snowy: https://media.giphy.com/media/Xm3YZIeIHia2Y/giphy.gif
+https://media.giphy.com/media/lTz3aqEAZZYUo/giphy.gif
+
+thunder: https://media.giphy.com/media/3Gh8fZyNw5q7K/giphy.gif
+
+morning:https://media.giphy.com/media/xNjBdnD9xFsf6/giphy.gif
+
+sunset?: https://media.giphy.com/media/UqWwKG1XGutck/giphy.gif
+https://media.giphy.com/media/12lIX6NT7FduNy/giphy.gif
+https://49.media.tumblr.com/44e8be11e2aa625e4ae4f6ec9680a1c0/tumblr_o30943uXNO1upvbufo1_540.gif
+https://media.giphy.com/media/26CYAE1nLf19gYXq8/giphy.gif
+https://media.giphy.com/media/xTiQyzmMjjjYlNMUE0/giphy.gif
+
+afternoon? : https://media.giphy.com/media/3oGRFoJIFAMD7Gzyxi/giphy.gif
+https://66.media.tumblr.com/3ca1ade29b774b03c298a4f33a6ccc64/tumblr_o5j9toZL9W1upvbufo1_540.gif
+https://media.giphy.com/media/xTiQyJgjDdujXzonMQ/giphy.gif
+https://media.giphy.com/media/3o85fQpeUu1iR9BAnm/giphy.gif
+https://media.giphy.com/media/3oGRFIylD7p64Uoa6A/giphy.gif
+https://media.giphy.com/media/l4hLCjV32g6T96T4I/giphy.gif
+https://media.giphy.com/media/xTiQym77vYDZPG1Tlm/giphy.gif
+
+night:https://media.giphy.com/media/26CYANbPD4ku67JZu/giphy.gif
+https://media.giphy.com/media/l4hLRemF2zCKoni6Y/giphy.gif
+https://45.media.tumblr.com/eb074ac72661275a8a2faef70b6fbb97/tumblr_o0dvn8GaRf1upvbufo1_540.gif

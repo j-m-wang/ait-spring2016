@@ -1,1 +1,269 @@
-<h1>Today</h1>
+<h1 data-anijs="if: DOMContentLoaded, on: document, do: fadeInDown animated">Today</h1>
+<div id="information"></div>
+<div id="formInfo"></div>
+<div id="add"></div>
+
+<br><br>
+
+<div class='formDivs'>
+  <form id="forecastForm" method="POST" action="/forecast">
+    Show me a <select id="numOfDays" name="numOfDays">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select> day forecast
+    <br><br>
+    <input type="submit" id="forecastSubBtn" name="" value="Go!">
+  </form>
+</div>
+
+<!-- grab background information from mongo; place here to allow front-end JS to grab -->
+<div class='hidden'>
+  <ul id="backgroundUl">
+  {{#each obj}}
+    <li>{{name}},{{timeOfDay}},{{url}}</li>
+  {{/each}}
+  </ul>
+</div>
+
+<script>
+  function initMap() {
+
+  //calls geolocation
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+  }
+  //Get the latitude and the longitude
+  function successFunction(position) {
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      //once lat/lng is called; connect with openweathermap to get weather
+      lat.onLoad = getWeather(lat, lng);
+  }
+
+  //in case of error- allow users to input their own data
+  function errorFunction() {
+    var formDiv = document.getElementById('forecastForm');
+    formDiv.classList.add('hidden');
+    var informationTag = document.getElementById('information');
+    var headerMsg = document.createElement('h3');
+    var headerText = document.createTextNode("Geocoder Failed! ");
+    headerMsg.appendChild(headerText);
+    informationTag.appendChild(headerMsg);
+
+    //create all the new br elements we need
+    var numArr = [0, 1, 2, 3, 4, 5, 6, 7, 8], breakLineArr = [];
+    numArr.map(function(currentValue) {
+      var current = document.createElement('br');
+      breakLineArr.push(current);
+    });
+
+    var errMsg = document.createElement('p');
+    var errText = document.createTextNode("You have either denied the browser's request to access your location or are accessing this page on an unsecure network (http not https). ");
+    var secondMsg = document.createElement('p');
+    var secondText = document.createTextNode("Enter your information below to recieve your forecast!");
+    errMsg.appendChild(errText);
+    secondMsg.appendChild(secondText);
+    informationTag.appendChild(errMsg);
+    informationTag.appendChild(breakLineArr[0]);
+    informationTag.appendChild(breakLineArr[1]);
+    informationTag.appendChild(secondMsg);
+
+    //create new form for lat/long
+    var formTag = document.getElementById('formInfo');
+    var newForm = document.createElement('form');
+    newForm.setAttribute('method', 'POST');
+    newForm.setAttribute("action", "/");
+
+    //remove city functionality for now
+    // var cityLabel = document.createElement('p');
+    // var cityText = document.createTextNode('City Name: ');
+    // cityLabel.appendChild(cityText);
+    // var cityInput = document.createElement("input");
+    // cityInput.setAttribute('type', 'text');
+    // cityInput.setAttribute('name', 'cityName');
+
+    var latLabel = document.createElement('p');
+    var latText = document.createTextNode('Latitude: ');
+    latLabel.appendChild(latText);
+    var latInput = document.createElement('input');
+    latInput.setAttribute('type', 'text');
+    latInput.setAttribute('name', 'latInput');
+
+    var longLabel = document.createElement('p');
+    var longText = document.createTextNode('Longitude: ');
+    longLabel.appendChild(longText);
+    var longInput = document.createElement('input');
+    longInput.setAttribute('type', 'text');
+    longInput.setAttribute('name', 'longInput');
+
+    var submitBtn = document.createElement('input');
+    submitBtn.setAttribute('type', 'button');
+    submitBtn.setAttribute('value', 'Submit!');
+
+    // informationTag.appendChild(breakLineArr[2]);
+    // newForm.appendChild(cityLabel);
+    // newForm.appendChild(cityInput);
+    // newForm.appendChild(breakLineArr[3]);
+    newForm.appendChild(breakLineArr[4]);
+    newForm.appendChild(latLabel);
+    newForm.appendChild(latInput);
+    newForm.appendChild(breakLineArr[5]);
+    newForm.appendChild(breakLineArr[6]);
+    newForm.appendChild(longLabel);
+    newForm.appendChild(longInput);
+    newForm.appendChild(breakLineArr[7]);
+    newForm.appendChild(breakLineArr[8]);
+    newForm.appendChild(submitBtn);
+    formTag.appendChild(newForm);
+
+    //when there is a geolocation error, all output is directly placed on the page; no redirects
+    submitBtn.addEventListener('click', function() {
+      //get the weather
+      getWeather(latInput.value, longInput.value);
+      //remove the input/reveal forcast option
+      formDiv.classList.remove('hidden');
+      newForm.classList.add('hidden');
+      var foreSubBtn = document.getElementById('forecastSubBtn');
+      foreSubBtn.addEventListener('click', function(evt) {
+        evt.preventDefault()
+        var runTimes = document.getElementById('numOfDays').value;
+        //find forecast
+        getForecast(latInput.value, longInput.value, runTimes);
+        //remove display
+        formDiv.classList.add('hidden');
+      })
+    });
+  }
+
+  //find forecast by linking to openweathermap
+  function getForecast(lat, lng, numOfDays) {
+    var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lng + '&APPID=b6c4be63fe138e605fa89d180e1fb46f&units=imperial';
+    //retrieve json data from URL
+    $.getJSON( url, function( data ) {
+      var dateTracker = 0;
+      //finds forecast for number of days user inputs + appends to document
+      for (var i = 0; i < numOfDays; i++) {
+        dateTracker += 8;
+        var addDiv = document.getElementById('add');
+        var newH3 = document.createElement('h3');
+        var tempDate = (JSON.stringify(data.list[dateTracker].dt_txt)).replace(/['"]+/g, '').split(' ');
+        var dateArr = tempDate[0].split('-');
+        var newText = document.createTextNode(dateArr[1] + '/' + dateArr[2] + '/' + dateArr[0]);
+        newH3.appendChild(newText);
+        addDiv.appendChild(newH3);
+
+        var newTemp = document.createElement('p');
+        var newTempText = document.createTextNode('Temperature: ' + JSON.stringify(Math.floor(data.list[dateTracker].main.temp)) + '°F');
+        newTemp.appendChild(newTempText);
+        addDiv.appendChild(newTemp);
+
+        var newForecast = document.createElement('p');
+        var tempForecast = (JSON.stringify(data.list[dateTracker].weather[0].main)).replace(/['"]+/g, '');
+        var newForecastText = document.createTextNode('Forecast: ' + tempForecast);
+        newForecast.appendChild(newForecastText);
+        addDiv.appendChild(newForecast);
+
+        var newDescript = document.createElement('p');
+        var tempDescript = (JSON.stringify(data.list[dateTracker].weather[0].description)).replace(/['"]+/g, '');
+        var newDescriptText = document.createTextNode('Description: ' + tempDescript);
+        newDescript.appendChild(newDescriptText);
+        addDiv.appendChild(newDescript);
+      }
+    });
+  }
+
+  //gets weather information based on location- only returns today
+  function getWeather(lat, lng) {
+    var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lng + '&APPID=b6c4be63fe138e605fa89d180e1fb46f&units=imperial';
+
+    $.getJSON( url, function( data ) {
+      var sendData = data;
+      var informationTag = document.getElementById('information');
+
+      var locationTag = document.createElement('p');
+      var cityName = (JSON.stringify(data.city.name)).replace(/['"]+/g, '');
+      var locationText = document.createTextNode('City: ' + cityName);
+      locationTag.appendChild(locationText);
+      informationTag.appendChild(locationTag);
+
+      //converts military time
+      var currentDate = new Date();
+      var currentHour = currentDate.getHours();
+      var currentMin = currentDate.getMinutes();
+      var amPM = "";
+      if (currentHour > 12) {
+        currentHour = currentHour - 12;
+        amPm = 'PM';
+      } else {
+        amPm = 'AM';
+      }
+      //adjust minutes if its within the first 10 minutes of the hour
+      if (currentMin < 10) {
+        var timeText = document.createTextNode('Time: ' + currentHour + ':0' + currentMin + ' ' + amPm);
+      } else {
+        var timeText = document.createTextNode('Time: ' + currentHour + ':' + currentMin + ' ' + amPm);
+      }
+      var timeTag = document.createElement('p');
+      timeTag.appendChild(timeText);
+      informationTag.appendChild(timeTag);
+
+      //native temp is in farenheit
+      var currentTempTag = document.createElement('p');
+      var tempText = document.createTextNode('Current Temperature: ' + (JSON.stringify(Math.floor(data.list[0].main.temp))) + '°F');
+      currentTempTag.appendChild(tempText);
+      informationTag.appendChild(currentTempTag);
+
+      var tempForecast = (JSON.stringify(data.list[0].weather[0].main)).replace(/['"]+/g, '');
+      var forecastTag = document.createElement('p');
+      var forecastText = document.createTextNode('Forecast: ' + tempForecast);
+      forecastTag.appendChild(forecastText);
+      informationTag.appendChild(forecastTag);
+
+      var tempDescript = (JSON.stringify(data.list[0].weather[0].description)).replace(/['"]+/g, '');
+      var descriptionTag = document.createElement('p');
+      var descriptionText = document.createTextNode('Description: ' + tempDescript);
+      descriptionTag.appendChild(descriptionText);
+      informationTag.appendChild(descriptionTag);
+    });
+    }
+  }
+
+  //change background randomly- based on time of day
+  var currentDate = new Date();
+  var currentHour = currentDate.getHours();
+
+  if (currentHour >= 6 && currentHour < 12) {
+    var currentTimeOfDay = 'morning';
+  } else if (currentHour >= 12 && currentHour < 20) {
+    var currentTimeOfDay = 'morning';
+  } else {
+    var currentTimeOfDay = 'night';
+  }
+
+  //grabs hidden data on page
+  var ulEle = document.getElementById('backgroundUl');
+  var liEles = ulEle.getElementsByTagName('li');
+
+  var liArr = [], relevantArr = [];
+  for (var i = 0; i < liEles.length; i++) {
+    liArr.push(liEles[i].innerHTML.split(','));
+  }
+
+  liArr.forEach(function(element, index) {
+    if (element[1] == currentTimeOfDay) {
+      relevantArr.push(element);
+    }
+  });
+
+  var relevantCounter = 0;
+  relevantArr.forEach(function(element, index) {
+    relevantCounter += 1;
+  });
+
+  var randNum = Math.floor(Math.random() * relevantCounter);
+  document.body.style.backgroundImage = "url(" + relevantArr[randNum][2] + ")";
+ </script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhhbCHpCoYv2ekugMAzqjvmK9975-VVSs&callback=initMap"
+ async defer></script>

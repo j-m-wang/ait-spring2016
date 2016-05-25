@@ -1,43 +1,185 @@
-<!-- <br><br><br><br><br><br> -->
-<h1>Choose A Location:</h1>
+<h1 data-anijs="if: DOMContentLoaded, on: document, do: fadeInDown animated">Choose A Location:</h1>
 <br><br><br>
 
 <div id="map"></div>
 <br><br>
 
-<div class='locationFormDiv'>
-<p>Or input a location below:</p>
-<form method="POST" action="/saved">
-  City Name: <input type="text" name="name" value="">
+<div class='formDivs'>
+<form method="POST" id="formID" action="/location">
+  City Name: <input id="cityName" type="text" name="name" value="">
   <br><br>
-  Latitude: <input type="text" name="lat" value="">
+  Latitude: <input id="pushLat" type="text" name="lat" value="">
   <br><br>
-  Longitude: <input type="text" name="lng" value="">
+  Longitude: <input id="pushLong" type="text" name="lng" value="">
   <br><br>
-  <input type="submit" name="" value="Find!">
+  <input id="pushForecast" type="hidden" name="forecast" value="">
+  <input id="pushTemp" type="hidden" name="temp" value="">
+  <input type="submit" id="submitBtn" ame="" value="Go!">
 </form>
+</div>
+
+<br>
+<div id="addForecast"></div>
+<br>
+
+<h4>Past Viewed Locations</h4>
+<ul id="pastViewed">
+  {{#each obj}}
+    <li>{{name}}</li>
+  {{/each}}
+</ul>
+<br><br>
+
+<!-- grab background information from mongo; place here to allow front-end JS to grab -->
+<div class='hidden'>
+  <ul id="backgroundUl">
+  {{#each back}}
+    <li>{{name}},{{timeOfDay}},{{url}}</li>
+  {{/each}}
+  </ul>
 </div>
 
 <script>
   var map;
+  var markers = [];
+  //default numbers for pushLat/pushLong
+  var pushLat = 400;
+  var pushLong = 400;
+
+  //post forecast with ajax post
+  var subBtn = document.getElementById('submitBtn');
+  subBtn.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    var req = new XMLHttpRequest();
+    req.open('POST', '/api/location');
+    //grab form data
+    var inputCity = document.getElementById('cityName').value;
+    var inputLat = document.getElementById('pushLat').value;
+    var inputLong = document.getElementById('pushLong').value;
+    req.addEventListener('load', function() {
+      console.log(req.responseText);
+    });
+    req.addEventListener('error', function() {
+       console.log(req.responseText);
+    });
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    //send back data to table
+    var data = 'name=' + inputCity;
+
+    //add new city to list
+    var listEle = document.getElementById('pastViewed');
+    var newLi = document.createElement('li');
+    var newText = document.createTextNode(inputCity);
+    newLi.appendChild(newText);
+    listEle.appendChild(newLi);
+
+    var addDiv = document.getElementById("addForecast");
+    var newH3 = document.createElement('h3');
+    var h3Text = document.createTextNode(document.getElementById("cityName").value);
+    newH3.appendChild(h3Text);
+    addDiv.appendChild(newH3);
+
+    var newForecast = document.createElement('p');
+    var forecastText = document.createTextNode(document.getElementById("pushForecast").value);
+    newForecast.appendChild(forecastText);
+    addDiv.appendChild(newForecast);
+
+    var newTempValue = document.createElement('p');
+    var tempValueText = document.createTextNode(document.getElementById("pushTemp").value);
+    newTempValue.appendChild(tempValueText);
+    addDiv.appendChild(newTempValue);
+
+    req.send(data);
+  });
+
+  //display map
   function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 2,
       center: {lat: 38.631912, lng: -98.157859 }
     });
+    var flag = 0;
 
+    //get lat + long from marker
     map.addListener('click', function(e) {
-      placeMarkerAndPanTo(e.latLng, map);
+      if (flag == 0) {
+        var marker = new google.maps.Marker({
+          position: e.latLng,
+          draggable:true,
+          map: map
+        });
+        markers.push(marker);
+        flag = 1;
+        pushLat = e.latLng.lat();
+        document.getElementById("pushLat").value = Math.floor(pushLat);
+        pushLong = e.latLng.lng();
+        document.getElementById("pushLong").value = Math.floor(pushLong);
+        getWeather(pushLat, pushLong);
+      } else {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(null);
+        }
+        var marker = new google.maps.Marker({
+          position: e.latLng,
+          draggable:true,
+          map: map
+        });
+        markers.push(marker);
+        pushLat = e.latLng.lat();
+        document.getElementById("pushLat").value = Math.floor(pushLat);
+        pushLong = e.latLng.lng();
+        document.getElementById("pushLong").value = Math.floor(pushLong);
+        getWeather(pushLat, pushLong);
+      }
     });
   }
 
-  function placeMarkerAndPanTo(latLng, map) {
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: map
+  //connect with openweathermap to get weather
+  function getWeather(lat, lng) {
+    var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lng + '&APPID=b6c4be63fe138e605fa89d180e1fb46f&units=imperial';
+    $.getJSON( url, function( data ) {
+      document.getElementById("cityName").value = (JSON.stringify(data.city.name)).replace(/['"]+/g, '');
+      document.getElementById("pushForecast").value = (JSON.stringify(data.list[0].weather[0].main)).replace(/['"]+/g, '');
+      document.getElementById("pushTemp").value = (JSON.stringify(Math.floor(data.list[0].main.temp)) + '°F');
     });
-    map.panTo(latLng);
+
   }
+
+  //change background randomly based on time of day
+  var currentDate = new Date();
+  var currentHour = currentDate.getHours();
+
+  if (currentHour >= 6 && currentHour < 12) {
+    var currentTimeOfDay = 'morning';
+  } else if (currentHour >= 12 && currentHour < 20) {
+    var currentTimeOfDay = 'morning';
+  } else {
+    var currentTimeOfDay = 'night';
+  }
+
+  //grab information from page
+  var ulEle = document.getElementById('backgroundUl');
+  var liEles = ulEle.getElementsByTagName('li');
+
+  var liArr = [], relevantArr = [];
+  for (var i = 0; i < liEles.length; i++) {
+    liArr.push(liEles[i].innerHTML.split(','));
+  }
+
+  liArr.forEach(function(element, index) {
+    if (element[1] == currentTimeOfDay) {
+      relevantArr.push(element);
+    }
+  });
+
+  var relevantCounter = 0;
+  relevantArr.forEach(function(element, index) {
+    relevantCounter += 1;
+  });
+
+  var randNum = Math.floor(Math.random() * relevantCounter);
+  document.body.style.backgroundImage = "url(" + relevantArr[randNum][2] + ")";
 </script>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhhbCHpCoYv2ekugMAzqjvmK9975-VVSs&callback=initMap"
 async defer></script>

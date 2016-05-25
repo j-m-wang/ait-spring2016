@@ -34,7 +34,8 @@
  }
 
 body {
-  background: url(https://media.giphy.com/media/lyVNcb1n5Ob0Q/giphy.gif);
+  /*background: url(https://media.giphy.com/media/l4hLRAwCyCjXiPbos/giphy.gif);*/
+  /*background: url(https://media.giphy.com/media/l4hLWgcHuPVv8dCCY/giphy.gif);*/
   background-position: 50% 40%;
 	background-attachment: fixed;
 	background-size: cover;
@@ -49,6 +50,10 @@ h1 {
   font-size: 8em;
   color: black;
   font-family: 'blackout', sans-serif;
+}
+
+h3 {
+  text-align: center;
 }
 
 h4 {
@@ -68,6 +73,7 @@ p {
   font-family: 'Georgia', serif;
   font-size: 1.3em;
   text-align: center;
+  /*color: black;*/
 }
 
 /*.clothing {
@@ -88,8 +94,21 @@ table {
   width: 100%;
 }
 
-.savedLocationFormDiv, .locationFormDiv {
+.formDivs {
   text-align: center;
+}
+
+#formInfo {
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.days {
+  width: 3%;
+}
+
+.hidden {
+  display: none
 }
 
 /*styling for map*/

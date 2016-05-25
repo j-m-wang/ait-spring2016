@@ -4,41 +4,37 @@
     <title>What's the Weather?</title>
     <!-- bootstrap CSS -->
     <link href="../css/bootstrap-css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/bootstrap-css/starter-template.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/sun.png">
 
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../pe-icon-7-weather/css/pe-icon-7-weather.css">
     <link rel="stylesheet" href="../pe-icon-7-weather/css/helper.css">
+    <link rel="stylesheet" href="http://anijs.github.io/lib/anicollection/anicollection.css">
+
   </head>
 
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
-        <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button> -->
-        <a class="navbar-brand" href="/">What's the Weather?</a>
+        <!-- implement anijs -->
+        <a class="navbar-brand" href="/" data-anijs="if: mouseover, do: tada animated">What's the Weather?</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <!-- class="active" -->
-          <!-- <li><a href="index">Home</a></li> -->
           <li><a href="today">Today</a></li>
-          <li><a href="clothing">Clothing</a></li>
           <li><a href="location">Location</a></li>
           <li><a href="saved">Saved</a></li>
-          <li><a href="login"><img src="images/social.png" width="20" height="20"></a></li>
+          <li><a href="settings">Settings</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
   </nav>
     <br><br>
     {{{body}}}
+    <script src="../js/jquery-1.12.3.min.js"></script>
     <script src="../js/bootstrap-js/bootstrap.min.js"></script>
-    <script src="../js/gmaps.min.js"></script>
+    <script src="../js/anijs-min.js"></script>
+
   </body>
 </html>

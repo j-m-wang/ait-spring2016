@@ -1,0 +1,110 @@
+<h1>{{obj}} Day Forecast</h1>
+
+<p id='location'>City: </p>
+<div id="add"></div>
+
+<!-- grab background information from mongo; place here to allow front-end JS to grab -->
+<div class='hidden'>
+  <ul id="backgroundUl">
+  {{#each back}}
+    <li>{{name}},{{timeOfDay}},{{url}}</li>
+  {{/each}}
+  </ul>
+</div>
+
+<script>
+  function initMap() {
+  //geolocate
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+  }
+  //Get the latitude and the longitude
+  function successFunction(position) {
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      lat.onLoad = getWeather(lat, lng);
+  }
+
+  //shouldn't happen- if geolocation failed earlier, forecast is handled directly on the page
+  //leave the alert in case it does happen
+  function errorFunction() {
+      alert("Geocoder failed");
+  }
+
+  //connects with openweathermap to grab data
+  function getWeather(lat, lng) {
+    var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lng + '&APPID=b6c4be63fe138e605fa89d180e1fb46f&units=imperial';
+    //gets json data from url; parses and appends to document
+    $.getJSON( url, function( data ) {
+      var dateTracker = 0;
+      for (var i = 0; i < {{obj}}; i++) {
+        dateTracker += 8;
+        var addDiv = document.getElementById('add');
+        var newH3 = document.createElement('h3');
+        var tempDate = (JSON.stringify(data.list[dateTracker].dt_txt)).replace(/['"]+/g, '').split(' ');
+        var dateArr = tempDate[0].split('-');
+        var newText = document.createTextNode(dateArr[1] + '/' + dateArr[2] + '/' + dateArr[0]);
+        newH3.appendChild(newText);
+        addDiv.appendChild(newH3);
+
+        var newTemp = document.createElement('p');
+        var newTempText = document.createTextNode('Temperature: ' + JSON.stringify(Math.floor(data.list[dateTracker].main.temp)) + '°F');
+        newTemp.appendChild(newTempText);
+        addDiv.appendChild(newTemp);
+
+        var newForecast = document.createElement('p');
+        var tempForecast = (JSON.stringify(data.list[dateTracker].weather[0].main)).replace(/['"]+/g, '');
+        var newForecastText = document.createTextNode('Forecast: ' + tempForecast);
+        newForecast.appendChild(newForecastText);
+        addDiv.appendChild(newForecast);
+
+        var newDescript = document.createElement('p');
+        var tempDescript = (JSON.stringify(data.list[dateTracker].weather[0].description)).replace(/['"]+/g, '');
+        var newDescriptText = document.createTextNode('Description: ' + tempDescript);
+        newDescript.appendChild(newDescriptText);
+        addDiv.appendChild(newDescript);
+      }
+      var locationTag = document.getElementById('location');
+      var tempLocation = (JSON.stringify(data.city.name)).replace(/['"]+/g, '');
+      var locationText = document.createTextNode(tempLocation);
+      locationTag.appendChild(locationText);
+    });
+  }
+  }
+
+  //change background randomly based on time of day
+  var currentDate = new Date();
+  var currentHour = currentDate.getHours();
+
+  if (currentHour >= 6 && currentHour < 12) {
+    var currentTimeOfDay = 'morning';
+  } else if (currentHour >= 12 && currentHour < 20) {
+    var currentTimeOfDay = 'morning';
+  } else {
+    var currentTimeOfDay = 'night';
+  }
+  //grab information from page
+  var ulEle = document.getElementById('backgroundUl');
+  var liEles = ulEle.getElementsByTagName('li');
+
+  var liArr = [], relevantArr = [];
+  for (var i = 0; i < liEles.length; i++) {
+    liArr.push(liEles[i].innerHTML.split(','));
+  }
+
+  liArr.forEach(function(element, index) {
+    if (element[1] == currentTimeOfDay) {
+      relevantArr.push(element);
+    }
+  });
+
+  var relevantCounter = 0;
+  relevantArr.forEach(function(element, index) {
+    relevantCounter += 1;
+  });
+
+  var randNum = Math.floor(Math.random() * relevantCounter);
+  document.body.style.backgroundImage = "url(" + relevantArr[randNum][2] + ")";
+ </script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhhbCHpCoYv2ekugMAzqjvmK9975-VVSs&callback=initMap"
+ async defer></script>

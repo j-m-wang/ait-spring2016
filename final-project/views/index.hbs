@@ -1,9 +1,58 @@
 <br><br><br><br><br>
-<h1>Good Morning, Alice</h1>
+<!-- base greeting in case JS isn't turned on -->
+<h1 id="greeting" data-anijs="if: DOMContentLoaded, on: document, do: fadeInDown animated">Hello</h1>
 <br><br><br><br>
 <div class="center">
-  <a href="today"><img src="images/temp.png" width="45" height="45"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="clothing"><img src="images/hanger.png" width="45" height="45"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="location"><img src="images/map-location.png" width="45" height="45"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="saved"><img src="images/paper.png" width="45" height="45"></a>
+  <a href="today"><img src="images/temp.png" data-anijs="if: mouseover, do: flip animated" width="45" height="45"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="location"><img src="images/map-location.png" data-anijs="if: mouseover, do: flip animated" width="45" height="45"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="saved"><img src="images/save-icon.png" data-anijs="if: mouseover, do: flip animated" width="40" height="40"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="settings"><img src="images/paper.png" data-anijs="if: mouseover, do: flip animated" width="45" height="45"></a>
 </div>
-<!-- <p>Today's weather is: <span class="weather">sunny</span></p> -->
 <br>
-<!-- <p class="clothing">Might we recommend: <img src="images/sunglasses.png" width="35" height="35"> <img src="images/fashion.png" width="35" height="35"> <img src="images/black.png" width="35" height="35"> <img src="images/summer.png" width="35" height="35"></p> -->
+
+<!-- grab background information from mongo; place here to allow front-end JS to grab -->
+<div class='hidden'>
+  <ul id="backgroundUl">
+  {{#each obj}}
+    <li>{{name}},{{timeOfDay}},{{url}}</li>
+  {{/each}}
+  </ul>
+</div>
+
+<script>
+  //base greeting + background on time of day
+  var currentDate = new Date();
+  var currentHour = currentDate.getHours();
+  var text = document.getElementById('greeting');
+
+  if (currentHour >= 6 && currentHour < 12) {
+    var currentTimeOfDay = 'morning';
+    text.innerHTML = 'Good Morning';
+  } else if (currentHour >= 12 && currentHour < 20) {
+    var currentTimeOfDay = 'morning';
+    text.innerHTML = 'Good Afternoon';
+  } else {
+    var currentTimeOfDay = 'night';
+    text.innerHTML = 'Good Night';
+  }
+
+  //grab information from webpage
+  var ulEle = document.getElementById('backgroundUl');
+  var liEles = ulEle.getElementsByTagName('li');
+
+  var liArr = [], relevantArr = [];
+  for (var i = 0; i < liEles.length; i++) {
+    liArr.push(liEles[i].innerHTML.split(','));
+  }
+
+  liArr.forEach(function(element, index) {
+    if (element[1] == currentTimeOfDay) {
+      relevantArr.push(element);
+    }
+  });
+
+  var relevantCounter = 0;
+  relevantArr.forEach(function(element, index) {
+    relevantCounter += 1;
+  });
+
+  var randNum = Math.floor(Math.random() * relevantCounter);
+  document.body.style.backgroundImage = "url(" + relevantArr[randNum][2] + ")";
+</script>

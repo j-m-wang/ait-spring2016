@@ -1,0 +1,92 @@
+<h1 data-anijs="if: DOMContentLoaded, on: document, do: fadeInDown animated">Settings</h1>
+
+<div class='formDivs'>
+<p>Sick of the background? Enter one of your own:</p>
+<form method="POST" action="/settings">
+  URL of GIF: <input type="url" id="url" name="url" value="">
+  <br><br>
+  Type of weather: <select id="weatherType" name="weatherType">
+    <option value="sunny">Sunny</option>
+    <option value="cloudy">Cloudy</option>
+    <option value="rainy">Rainy</option>
+    <option value="snowy">Snowy</option>
+    <option value="thunder">Thunder</option>
+  </select>
+  <br><br>
+  Time of Day: <select id="timeOfDay" name="timeOfDay">
+    <option value="morning">Morning</option>
+    <option value="night">Night</option>
+  </select>
+  <br><br>
+  <input type="submit" id="subBtn" name="" value="Enter!">
+</form>
+</div>
+
+<!-- grab background information from mongo; place here to allow front-end JS to grab -->
+<div class='hidden'>
+  <ul id="backgroundUl">
+  {{#each obj}}
+    <li>{{name}},{{timeOfDay}},{{url}}</li>
+  {{/each}}
+  </ul>
+</div>
+
+<script>
+  //change background with AJAX post
+  var submitBtn = document.getElementById('subBtn');
+  submitBtn.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    var req = new XMLHttpRequest();
+    req.open('POST', '/api/settings');
+    //grab form data
+    var gifURL = document.getElementById('url').value;
+    var weather = document.getElementById('weatherType').value;
+    var time = document.getElementById('timeOfDay').value;
+    req.addEventListener('load', function() {
+      console.log(req.responseText);
+    });
+    req.addEventListener('error', function() {
+       console.log(req.responseText);
+    });
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    //send back data to table
+    var data = 'url=' + gifURL + "&weatherType=" + weather + "&timeOfDay=" + time;
+    document.body.style.backgroundImage = "url(" + gifURL + ")";
+    req.send(data);
+  });
+
+  //change background randomly based on time of day
+  var currentDate = new Date();
+  var currentHour = currentDate.getHours();
+
+  if (currentHour >= 6 && currentHour < 12) {
+    var currentTimeOfDay = 'morning';
+  } else if (currentHour >= 12 && currentHour < 20) {
+    var currentTimeOfDay = 'morning';
+  } else {
+    var currentTimeOfDay = 'night';
+  }
+
+  //grab info from page
+  var ulEle = document.getElementById('backgroundUl');
+  var liEles = ulEle.getElementsByTagName('li');
+
+  var liArr = [], relevantArr = [];
+  for (var i = 0; i < liEles.length; i++) {
+    liArr.push(liEles[i].innerHTML.split(','));
+  }
+
+  liArr.forEach(function(element, index) {
+    if (element[1] == currentTimeOfDay) {
+      relevantArr.push(element);
+    }
+  });
+
+  var relevantCounter = 0;
+  relevantArr.forEach(function(element, index) {
+    relevantCounter += 1;
+  });
+
+  var randNum = Math.floor(Math.random() * relevantCounter);
+  document.body.style.backgroundImage = "url(" + relevantArr[randNum][2] + ")";
+</script>
